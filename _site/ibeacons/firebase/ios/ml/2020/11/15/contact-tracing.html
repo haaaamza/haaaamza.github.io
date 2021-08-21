@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+  
+  
+
+  
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  
+
+  
+    
+      
+      
+
+  <!-- Primary Meta Tags -->
+  <title>Hamza Mian | Contact Tracing with iBeacons</title>
+  <meta name="title" content="Hamza Mian | Contact Tracing with iBeacons"/>
+  <meta name="description" content="Using Cloud and iBeacons to detect potential exposure to COVID."/>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:site_name" content="Hamza Mian | Contact Tracing with iBeacons"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:url" content="http://localhost:4000/ibeacons/firebase/ios/ml/2020/11/15/contact-tracing"/>
+  <meta property="og:title" content="Hamza Mian | Contact Tracing with iBeacons"/>
+  <meta property="og:description" content="Using Cloud and iBeacons to detect potential exposure to COVID."/>
+  <meta property="og:image" content="http://localhost:4000"/>
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image"/>
+  <meta property="twitter:url" content="http://localhost:4000/ibeacons/firebase/ios/ml/2020/11/15/contact-tracing"/>
+  <meta property="twitter:title" content="Hamza Mian | Contact Tracing with iBeacons"/>
+  <meta property="twitter:description" content="Using Cloud and iBeacons to detect potential exposure to COVID."/>
+  <meta property="twitter:image" content="http://localhost:4000"/>
+  
+    <meta property="twitter:creator" content="@Mian__Hamza_"/>
+    <meta property="twitter:site" content="@Mian__Hamza_"/>
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/assets/css/main.css"/>
+  <link rel="canonical" href="http://localhost:4000/ibeacons/firebase/ios/ml/2020/11/15/contact-tracing"/>
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico" type="image/x-icon"/>
+
+  <!-- Google Analytics -->
+  <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', "", "auto");
+    ga('send', "pageview");
+  </script>
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+
+</head>
+
+
+  <body>
+    
+<header class="site-header">
+  <style>
+    /* .img-head{
+      width: 200px;
+      height: auto;
+    } */
+  </style>
+  <div class="wrapper">
+    <a class="site-title" href="http://localhost:4000/">
+      <img src="http://localhost:4000/assets/img/title.png" alt="Hamza Mian"/>
+    </a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon"></a>
+
+      <div class="menu">
+        
+          
+          
+          <a class="page-link" href="http://localhost:4000/">
+            About
+          </a>
+        
+          
+          
+          <a class="page-link" href="http://localhost:4000/research">
+            Research
+          </a>
+        
+          
+          
+          <a class="page-link" href="http://localhost:4000/life">
+            Life
+          </a>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+          <header class="post-header">
+
+            
+
+            <h1 class="post-title">
+            
+              Contact Tracing with iBeacons
+            
+            </h1>
+
+            
+            <p class="post-meta"><span class="post-date">November 15, 2020
+            </span> • Hamza</p>
+          </header>
+
+          <article class="post-content">
+            
+            <h3 id="preface">Preface</h3>
+<p>This app was built with Jack Hu at the McGill University Integrated Microsystems Lab. The Integrated Microsystems Lab at McGill (IML) (<a href="http://www.iml.ece.mcgill.ca/index_iml.php">link</a>) deals with the applications of embedded systems to real life.</p>
+<h1 id="the-proposed-solution">The Proposed Solution</h1>
+
+<p>The goal of this project was to develop application that acts as a universal Contact tracer, by obtaining data from another iBeacon devices using Bluetooth Low Energy and storing it in the cloud, the system is able to determine the location of the user at a specific time.
+The application allows for a positive test result to be added through the app, this updates the database for all users within the same location &amp; time and notifies them of a potential exposure.</p>
+
+<p>Given the scenario where people remain confined in small spaces (offices, classrooms) for long periods, the CDC has stated that maintaining a distance of 2 metres is insufficient in preventing a Covid-19 infection <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. Therefore, the app uses a radius of 6-metres, and a 5 minute window.</p>
+
+<h2 id="contact-tracing-system">Contact Tracing System</h2>
+<p>The Contact tracing System follows the following steps:</p>
+<ol>
+  <li>App scans for iBeacons</li>
+  <li>Detected information is added to Cloud (device information, timing)</li>
+  <li>User adds positive results, this is confirmed by text recognition</li>
+  <li>Cloud is updated to reflect positive result status</li>
+  <li>Other Users in Vicinity within a Time-range are notified of Positive Result</li>
+  <li>UI is updated for all affected users</li>
+</ol>
+
+<p>The infrastructure is comprised of 3 major processing endpoints:</p>
+<ol>
+  <li>iBeacon</li>
+  <li>Mobile App</li>
+  <li>Firebase</li>
+</ol>
+
+<p><img src="/img/posts/contact-tracing/flowchart.png" alt="img1" height="400" /></p>
+
+<h3 id="the-ibeacon">The iBeacon</h3>
+<p>The board used for iBeacon simulation is the Thunderboard RS9116 WiSeConnect. The RS9116 module uses Bluetooth Low Energy to advertise as an iBeacon and UART communication via teraterm to configure the module as an iBeacon.</p>
+
+<p>The contact tracing app scans for the RS9116 beacons around which advertise their UUIDs, major, minor values. This helps the iOS device to calculate the location of a user from the beacon device. Figure 2 shows a sample iBeacon infrastructure that can be used indoors in order to find the location of the user.</p>
+
+<p><img src="/img/posts/contact-tracing/table.png" alt="img2" height="400" /></p>
+
+<p>As shown in the figure above the iBeacon UUID, Major &amp; Minor values can help pinpoint the exact location of the user. In this case the user is a student, this infrastructure is useful for contact tracing in small and enclosed spaces.</p>
+
+<h3 id="the-app">The App</h3>
+
+<p>The app is made using SWIFT and Core Location. 
+The app has 3 view controllers:
+	1. Main VC
+		• It displays the status of potential infection to the user. If the user has been potentially infected, or tested positive this main view controller changes.
+	2. Self-Report VC
+			• Upload COVID test result -&gt; verified by text detection.
+			• Calls function to update Firebase of positive result.
+	3. Information VC
+			• Sends user to WHO Website that gives information on COVID-19</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><img src="/img/posts/contact-tracing/ui1.png" alt="img3" height="595" /></th>
+      <th><img src="/img/posts/contact-tracing/ui2.png" alt="img4" height="595" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/img/posts/contact-tracing/ui3.png" alt="img5" height="595" /></td>
+      <td><img src="/img/posts/contact-tracing/ui4.png" alt="img6" height="595" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The iBeacon tells the application the percieved distance of the user from the iBeacon. This is classified in three states: immediate, near, far. Being near/immediate means the user is within 3 metres of that particular iBeacon. 
+If the user is near or immediate to a particular iBeacon, the app will write to Firebase a struct containing:</p>
+<ol>
+  <li>Randomly generated phone id that allows for privacy between the user and the database.</li>
+  <li>major, minor and UUID value of the iBeacon. This helps us determine the location of the user.</li>
+  <li>A test result boolean that keeps track of user exposure to the disease</li>
+  <li>A proximity enumeration that is expressed as an integer helps us keep track of the approximate distance between the user and the iBeacon, and a distance that a more accurate distance measurement in metres between the user and the iBeacon</li>
+  <li>A @DocumentID variable that keeps track of the specific interaction between the user and the iBeacon and a @ServerTimestamp variable that tracks the time the document was added to the database</li>
+</ol>
+
+<p>The information in the struct will ensure that if a user tests positive, all potentially exposed users can be notified. The struct will be able to pinpoint which users are within a 3 metre radius of the infected user within the same time frame. This is depicted in the figure below.</p>
+
+<p><img src="/img/posts/contact-tracing/distance.png" alt="img7" height="400" /></p>
+
+<h3 id="firebase">Firebase</h3>
+<p>We use a SnapshotListener that takes a Snapshot of the database, and runs selected code if the database has changed. A SnapshotListener is basically an observer, that notifies the application that data has changed.</p>
+
+<p>In our case the SnapshotListener picks up on a database change, and checks if the COVID test result is true. The control flow is shown below:</p>
+<ol>
+  <li>User 1 Uploads positive result</li>
+  <li>User 1’s application updates Firestore Database for other Users
+  • All users in vicinity have their documents updated in the Firestore
+  • Users within 6 Metres, and a 5 minute window are now ‘exposed’</li>
+  <li>The SnapshotListener for each affected user is called since the Firestore has been changed.
+ • Update the App UI notifying them of the COVID exposure.
+Firestore is scalable, it enables the application to support a growing population of users.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></li>
+</ol>
+
+<p>The figure below shows the Firestore setup. Each seperate iBeacon will have a seperate subcollection that records all interactions between users. 
+<img src="/img/posts/contact-tracing/firestore.png" alt="img8" height="400" /></p>
+
+<h2 id="privacy">Privacy</h2>
+<p>Institutions such as provincial governments, schools, and companies can create unique accounts for their users. These accounts serve as a medium for authentication as Firebase Cloud has security rules that grant developer/authenticated accounts to access the remote storage.
+A proposed solution that can protect the identity of users from third parties and also keep a layer of privacy from institutions:
+	1) Authentication from central entity to write to the Cloud 
+	2) Anonymous device IDs are generated locally from the device application and are used for Cloud functions and beacon contact tracing.
+The proposed solution above prevents malicious entities from accessing and altering sensitive information regarding the users’ health status. The device identifiers anonymously help contact trace which devices were present near particular iBeacons at a particular time. This two-step solution allows for not only secure cloud access but also maintains users’ anonymity within institutions like schools, offices, governments, etc…</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Contact tracing is a necessary step in managing the spread of pandemic diseases in the foreseeable future. This project evaluates the use of embedded systems in contact tracing. The solution offers an effective method to build contact tracing infrastructure within settings such as schools and office buildings.
+At the end the team was satisfied by the functionality of the app. There were some improvements that would have increased the utility of the app, such as a Notification of exposure sent to the user directly and creating possible integration solutions to work with Government healthcare systems.</p>
+
+<hr />
+
+<p><strong>You can see the final paper <a href="https://drive.google.com/file/d/18gY8k0e6w29lctstFQHlq7tn0mEuCGwQ/view" target="_blank">here</a></strong></p>
+
+<p>```</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>”Scientific Brief: SARS-CoV-2 Transmission”, Centers for Disease Control and Prevention, 2021. [Online]. Available: https://www.cdc.gov/coronavirus/2019-ncov/science/science-briefs/sars- cov-2-transmission.html. [Accessed: 19- December- 2021]. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>Cloud Firestore — Firebase, Google. [Online]. Available: https://firebase.google.com/docs/firestore. [Accessed: 02-Dec-2020]. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+          </article>
+
+          
+
+      </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <h4>CONTACT</h4>
+
+        <div class="social-links">
+          
+            <div class="social-link contact-links">
+
+              
+              <img
+                src="http://localhost:4000/assets/img/icons/email.png"
+                alt="email"
+              />
+              <a href="mailto:mian.hamza@mail.mcgill.ca" id="email-link">
+                
+                  mian.hamza@mail.mcgill.ca
+                
+              </a>
+            </div>
+
+          
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <h4>FOLLOW</h4>
+
+        <div class="social-links follow-links">
+          
+            <div class="social-link">
+
+              
+              <img
+                src="http://localhost:4000/assets/img/icons/twitter.png"
+                alt="twitter"
+              />
+              <a href="https://twitter.com/Mian__Hamza_">
+                
+                  Twitter
+                
+              </a>
+            </div>
+
+          
+            <div class="social-link">
+
+              
+              <img
+                src="http://localhost:4000/assets/img/icons/linkedin.png"
+                alt="linkedin"
+              />
+              <a href="https://www.linkedin.com/in/mian-hamza/">
+                
+                  LinkedIn
+                
+              </a>
+            </div>
+
+          
+            <div class="social-link">
+
+              
+              <img
+                src="http://localhost:4000/assets/img/icons/github.png"
+                alt="github"
+              />
+              <a href="https://github.com/haaaamza">
+                
+                  GitHub
+                
+              </a>
+            </div>
+
+          
+        </div>
+      </div>
+
+      
+        <div class="footer-col footer-col-3 powered-by">
+          <p>
+            inspired by <a href="https://github.com/eliottvincent/bay">Bay</a> | 2021
+          </p>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+
+  
+
+
+
+
+
+
+    <script type="text/javascript" src="http://localhost:4000/assets/js/vendor/cash-4.1.5.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/site.js"></script>
+
+  </body>
+</html>

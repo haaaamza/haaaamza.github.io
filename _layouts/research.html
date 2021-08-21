@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+    .container{ 
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+    .text {
+      font-size: 10px;
+      padding-left: 20px;
+    }
+    .blog-post-title {
+    font-size: 21px;
+    /* letter-spacing: normal; */
+    letter-spacing: 1.4px;
+    display: block;
+    padding-bottom: 5px;
+    white-space: nowrap;
+    color:rgb(9, 53, 134);
+  }
+  .blog-post-title:hover {
+    color: orangered;
+  }
+  .pluslink, .pluslink:visited,.pluslink:hover,.pluslink:active {
+    text-decoration:none;
+  }
+  .img{
+    max-width:400px;
+    height:auto;
+    width:auto;
+  }
+  </style>
+  {% include head.html %}
+  </head>
+
+  <body>
+    {% include header.html %}
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="blog">
+          <h1 class="page-heading">{{ page.title }}</h1>
+          {{ content }}
+            {% for post in site.posts %}
+              {% if post.draft != true and post.research ==true %}
+                <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}" class = pluslink>
+                  <div class="container">
+                    <h3 class="blog-post-title"> {{ post.title }}</h3>
+                    <img class = "img" src={{ post.og_image | prepend: site.baseurl }}>
+                </a>
+                    <div class="text">
+                      <h2>{{ post.blurb }}</h2>
+                    </div>
+                  </div>
+
+                <br />
+                
+
+              {% endif %}
+
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% include footer.html %}
+
+    {% include foot.html %}
+  </body>
+</html>

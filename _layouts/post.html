@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  {% include head.html %}
+
+  <body>
+    {% include header.html %}
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+          <header class="post-header">
+
+            {% if page.draft %}
+              {% include draft-banner.html %}
+            {% endif %}
+
+            <h1 class="post-title">
+            {% if page.headline_formatted_title %}
+              {{ page.headline_formatted_title | newline_to_br }}
+            {% elsif page.life!=true or page.title != "" %}
+              {{ page.title }}
+            {% endif %}
+            </h1>
+
+            {% if page.subtitle %}<h1 class="post-subtitle">{{ page.subtitle }}</h1>{% endif %}
+            <p class="post-meta"><span class="post-date">{{ page.date | date: "%B %-d, %Y" }}
+            </span>{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
+          </header>
+
+          <article class="post-content">
+            {% if page.life == true %}
+              {% if page.isquote == true %}
+                {% if page.extra_img != ""%}
+                <img class="img-life" src={{ page.extra_img | prepend: site.baseurl }}>
+                {% endif %}
+              <figure>
+                  <blockquote>
+                      <p>{{ page.quote }}</p>
+                  </blockquote>
+                  <figcaption>—{{page.author}}{%unless post.source == none%}<cite>{{post.source | prepend: "," }}</cite>{%endunless%}</figcaption>
+                </figure>
+              {% endif %}
+              {% if page.og_image != "" %}
+                <img class="img-life" src={{ page.og_image | prepend: site.baseurl }}>
+                <br>
+                {{page.blurb}}
+              {% endif %}
+            {% endif %}
+            {{ content }}
+          </article>
+
+          {% if page.draft %}
+              {% include draft-banner.html %}
+          {% endif %}
+
+      </div>
+      </div>
+    </div>
+
+    {% include footer.html %}
+
+    {% include foot.html %}
+  </body>
+</html>

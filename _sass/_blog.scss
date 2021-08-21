@@ -1,0 +1,27 @@
+@import '../_sass/image';
+.blog-post-list {
+  .blog-post-date {
+    // width: 6em;
+    // color: #777;
+    width: 6em;
+    color: rgb(9, 134, 134);
+    display: block;
+    float: left;
+
+    @include media-query($on-mobile) {
+      display: block;
+      float: none;
+      color: rgb(9, 134, 134);
+      font-size: 11px;
+      margin-top: 14px;
+    }
+  }
+  .blog-post-date:hover {
+    color: rgba(219, 69, 0, 0.719);
+  }
+  .pluslink, .pluslink:visited,.pluslink:hover,.pluslink:active {
+    text-decoration:underline;
+  }
+  @include img-responsive();
+
+}

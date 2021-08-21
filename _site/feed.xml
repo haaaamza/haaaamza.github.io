@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-08-21T16:13:09+03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hamza Mian</title><subtitle>Bay is a minimal Jekyll Theme.</subtitle><entry><title type="html">Paris</title><link href="http://localhost:4000/travel/2021/08/10/Paris.html" rel="alternate" type="text/html" title="Paris" /><published>2021-08-10T15:00:00+03:00</published><updated>2021-08-10T15:00:00+03:00</updated><id>http://localhost:4000/travel/2021/08/10/Paris</id><content type="html" xml:base="http://localhost:4000/travel/2021/08/10/Paris.html">&lt;p&gt;Taken at Le Sacré-Cœur on August, 4, 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/life/paris2.JPG&quot; alt=&quot;paris2&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;</content><author><name>Hamza</name></author><category term="Travel" /><category term="Paris" /><category term="Travel" /><summary type="html">Taken at Le Sacré-Cœur on August, 4, 2017.</summary></entry><entry><title type="html">Contact Tracing with iBeacons</title><link href="http://localhost:4000/ibeacons/firebase/ios/ml/2020/11/15/contact-tracing.html" rel="alternate" type="text/html" title="Contact Tracing with iBeacons" /><published>2020-11-15T15:00:00+03:00</published><updated>2020-11-15T15:00:00+03:00</updated><id>http://localhost:4000/ibeacons/firebase/ios/ml/2020/11/15/contact-tracing</id><content type="html" xml:base="http://localhost:4000/ibeacons/firebase/ios/ml/2020/11/15/contact-tracing.html">&lt;h3 id=&quot;preface&quot;&gt;Preface&lt;/h3&gt;
+&lt;p&gt;This app was built with Jack Hu at the McGill University Integrated Microsystems Lab. The Integrated Microsystems Lab at McGill (IML) (&lt;a href=&quot;http://www.iml.ece.mcgill.ca/index_iml.php&quot;&gt;link&lt;/a&gt;) deals with the applications of embedded systems to real life.&lt;/p&gt;
+&lt;h1 id=&quot;the-proposed-solution&quot;&gt;The Proposed Solution&lt;/h1&gt;
+
+&lt;p&gt;The goal of this project was to develop application that acts as a universal Contact tracer, by obtaining data from another iBeacon devices using Bluetooth Low Energy and storing it in the cloud, the system is able to determine the location of the user at a specific time.
+The application allows for a positive test result to be added through the app, this updates the database for all users within the same location &amp;amp; time and notifies them of a potential exposure.&lt;/p&gt;
+
+&lt;p&gt;Given the scenario where people remain confined in small spaces (offices, classrooms) for long periods, the CDC has stated that maintaining a distance of 2 metres is insufficient in preventing a Covid-19 infection &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. Therefore, the app uses a radius of 6-metres, and a 5 minute window.&lt;/p&gt;
+
+&lt;h2 id=&quot;contact-tracing-system&quot;&gt;Contact Tracing System&lt;/h2&gt;
+&lt;p&gt;The Contact tracing System follows the following steps:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;App scans for iBeacons&lt;/li&gt;
+  &lt;li&gt;Detected information is added to Cloud (device information, timing)&lt;/li&gt;
+  &lt;li&gt;User adds positive results, this is confirmed by text recognition&lt;/li&gt;
+  &lt;li&gt;Cloud is updated to reflect positive result status&lt;/li&gt;
+  &lt;li&gt;Other Users in Vicinity within a Time-range are notified of Positive Result&lt;/li&gt;
+  &lt;li&gt;UI is updated for all affected users&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The infrastructure is comprised of 3 major processing endpoints:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;iBeacon&lt;/li&gt;
+  &lt;li&gt;Mobile App&lt;/li&gt;
+  &lt;li&gt;Firebase&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/contact-tracing/flowchart.png&quot; alt=&quot;img1&quot; height=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;the-ibeacon&quot;&gt;The iBeacon&lt;/h3&gt;
+&lt;p&gt;The board used for iBeacon simulation is the Thunderboard RS9116 WiSeConnect. The RS9116 module uses Bluetooth Low Energy to advertise as an iBeacon and UART communication via teraterm to configure the module as an iBeacon.&lt;/p&gt;
+
+&lt;p&gt;The contact tracing app scans for the RS9116 beacons around which advertise their UUIDs, major, minor values. This helps the iOS device to calculate the location of a user from the beacon device. Figure 2 shows a sample iBeacon infrastructure that can be used indoors in order to find the location of the user.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/contact-tracing/table.png&quot; alt=&quot;img2&quot; height=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As shown in the figure above the iBeacon UUID, Major &amp;amp; Minor values can help pinpoint the exact location of the user. In this case the user is a student, this infrastructure is useful for contact tracing in small and enclosed spaces.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-app&quot;&gt;The App&lt;/h3&gt;
+
+&lt;p&gt;The app is made using SWIFT and Core Location. 
+The app has 3 view controllers:
+	1. Main VC
+		• It displays the status of potential infection to the user. If the user has been potentially infected, or tested positive this main view controller changes.
+	2. Self-Report VC
+			• Upload COVID test result -&amp;gt; verified by text detection.
+			• Calls function to update Firebase of positive result.
+	3. Information VC
+			• Sends user to WHO Website that gives information on COVID-19&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;img src=&quot;/img/posts/contact-tracing/ui1.png&quot; alt=&quot;img3&quot; height=&quot;595&quot; /&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;img src=&quot;/img/posts/contact-tracing/ui2.png&quot; alt=&quot;img4&quot; height=&quot;595&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/contact-tracing/ui3.png&quot; alt=&quot;img5&quot; height=&quot;595&quot; /&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/contact-tracing/ui4.png&quot; alt=&quot;img6&quot; height=&quot;595&quot; /&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The iBeacon tells the application the percieved distance of the user from the iBeacon. This is classified in three states: immediate, near, far. Being near/immediate means the user is within 3 metres of that particular iBeacon. 
+If the user is near or immediate to a particular iBeacon, the app will write to Firebase a struct containing:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Randomly generated phone id that allows for privacy between the user and the database.&lt;/li&gt;
+  &lt;li&gt;major, minor and UUID value of the iBeacon. This helps us determine the location of the user.&lt;/li&gt;
+  &lt;li&gt;A test result boolean that keeps track of user exposure to the disease&lt;/li&gt;
+  &lt;li&gt;A proximity enumeration that is expressed as an integer helps us keep track of the approximate distance between the user and the iBeacon, and a distance that a more accurate distance measurement in metres between the user and the iBeacon&lt;/li&gt;
+  &lt;li&gt;A @DocumentID variable that keeps track of the specific interaction between the user and the iBeacon and a @ServerTimestamp variable that tracks the time the document was added to the database&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The information in the struct will ensure that if a user tests positive, all potentially exposed users can be notified. The struct will be able to pinpoint which users are within a 3 metre radius of the infected user within the same time frame. This is depicted in the figure below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/contact-tracing/distance.png&quot; alt=&quot;img7&quot; height=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;firebase&quot;&gt;Firebase&lt;/h3&gt;
+&lt;p&gt;We use a SnapshotListener that takes a Snapshot of the database, and runs selected code if the database has changed. A SnapshotListener is basically an observer, that notifies the application that data has changed.&lt;/p&gt;
+
+&lt;p&gt;In our case the SnapshotListener picks up on a database change, and checks if the COVID test result is true. The control flow is shown below:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;User 1 Uploads positive result&lt;/li&gt;
+  &lt;li&gt;User 1’s application updates Firestore Database for other Users
+  • All users in vicinity have their documents updated in the Firestore
+  • Users within 6 Metres, and a 5 minute window are now ‘exposed’&lt;/li&gt;
+  &lt;li&gt;The SnapshotListener for each affected user is called since the Firestore has been changed.
+ • Update the App UI notifying them of the COVID exposure.
+Firestore is scalable, it enables the application to support a growing population of users.&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The figure below shows the Firestore setup. Each seperate iBeacon will have a seperate subcollection that records all interactions between users. 
+&lt;img src=&quot;/img/posts/contact-tracing/firestore.png&quot; alt=&quot;img8&quot; height=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;privacy&quot;&gt;Privacy&lt;/h2&gt;
+&lt;p&gt;Institutions such as provincial governments, schools, and companies can create unique accounts for their users. These accounts serve as a medium for authentication as Firebase Cloud has security rules that grant developer/authenticated accounts to access the remote storage.
+A proposed solution that can protect the identity of users from third parties and also keep a layer of privacy from institutions:
+	1) Authentication from central entity to write to the Cloud 
+	2) Anonymous device IDs are generated locally from the device application and are used for Cloud functions and beacon contact tracing.
+The proposed solution above prevents malicious entities from accessing and altering sensitive information regarding the users’ health status. The device identifiers anonymously help contact trace which devices were present near particular iBeacons at a particular time. This two-step solution allows for not only secure cloud access but also maintains users’ anonymity within institutions like schools, offices, governments, etc…&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Contact tracing is a necessary step in managing the spread of pandemic diseases in the foreseeable future. This project evaluates the use of embedded systems in contact tracing. The solution offers an effective method to build contact tracing infrastructure within settings such as schools and office buildings.
+At the end the team was satisfied by the functionality of the app. There were some improvements that would have increased the utility of the app, such as a Notification of exposure sent to the user directly and creating possible integration solutions to work with Government healthcare systems.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;You can see the final paper &lt;a href=&quot;https://drive.google.com/file/d/18gY8k0e6w29lctstFQHlq7tn0mEuCGwQ/view&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;”Scientific Brief: SARS-CoV-2 Transmission”, Centers for Disease Control and Prevention, 2021. [Online]. Available: https://www.cdc.gov/coronavirus/2019-ncov/science/science-briefs/sars- cov-2-transmission.html. [Accessed: 19- December- 2021]. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Cloud Firestore — Firebase, Google. [Online]. Available: https://firebase.google.com/docs/firestore. [Accessed: 02-Dec-2020]. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Hamza</name></author><category term="iBeacons" /><category term="Firebase" /><category term="iOS" /><category term="ML" /><category term="SWIFT" /><category term="Firebase" /><category term="iBeacon" /><summary type="html">Preface This app was built with Jack Hu at the McGill University Integrated Microsystems Lab. The Integrated Microsystems Lab at McGill (IML) (link) deals with the applications of embedded systems to real life. The Proposed Solution</summary></entry><entry><title type="html"></title><link href="http://localhost:4000/2020/08/21/quote1.html" rel="alternate" type="text/html" title="" /><published>2020-08-21T13:00:40+03:00</published><updated>2020-08-21T13:00:40+03:00</updated><id>http://localhost:4000/2020/08/21/quote1</id><content type="html" xml:base="http://localhost:4000/2020/08/21/quote1.html">&lt;p&gt;Saadat Hasan Manto was a writer and poet. 
+&lt;br /&gt;
+He would write short stories the would highlight the ills of society during the partition of India in 1947.
+In this quote he is addressing allegations regarding his writing being too vulgar and obscene for society.&lt;/p&gt;</content><author><name>Saadat Hasan Manto</name></author><summary type="html">Saadat Hasan Manto was a writer and poet. He would write short stories the would highlight the ills of society during the partition of India in 1947. In this quote he is addressing allegations regarding his writing being too vulgar and obscene for society.</summary></entry><entry><title type="html"></title><link href="http://localhost:4000/2020/08/21/steve-quote.html" rel="alternate" type="text/html" title="" /><published>2020-08-21T13:00:40+03:00</published><updated>2020-08-21T13:00:40+03:00</updated><id>http://localhost:4000/2020/08/21/steve-quote</id><content type="html" xml:base="http://localhost:4000/2020/08/21/steve-quote.html">&lt;p&gt;Steve Jobs was a revolutionary of our time. 
+&lt;br /&gt;
+The quotes above and below are powerful reminders, and calls to action.&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;blockquote&gt;
+        &lt;p&gt;Your time is limited, so don’t waste it living someone else’s life. Don’t be trapped by dogma — which is living with the results of other people’s thinking. Don’t let the noise of others’ opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary.&lt;/p&gt;
+    &lt;/blockquote&gt;
+    &lt;figcaption&gt;—Steve Jobs&lt;/figcaption&gt;
+&lt;/figure&gt;</content><author><name>Steve Jobs</name></author><summary type="html">Steve Jobs was a revolutionary of our time. The quotes above and below are powerful reminders, and calls to action.</summary></entry><entry><title type="html">Food detection App for Diabetics</title><link href="http://localhost:4000/ml/image%5C/detection/2020/05/03/food-detection.html" rel="alternate" type="text/html" title="Food detection App for Diabetics" /><published>2020-05-03T15:00:00+03:00</published><updated>2020-05-03T15:00:00+03:00</updated><id>http://localhost:4000/ml/image%5C/detection/2020/05/03/food-detection</id><content type="html" xml:base="http://localhost:4000/ml/image%5C/detection/2020/05/03/food-detection.html">&lt;h3 id=&quot;preface&quot;&gt;Preface&lt;/h3&gt;
+&lt;p&gt;This app was built with a team of three individuals as part of the Final year design project for ECE at McGill University.&lt;/p&gt;
+&lt;h1 id=&quot;why-track-food&quot;&gt;Why Track Food?&lt;/h1&gt;
+
+&lt;p&gt;This project is a branch in a tree of future work for HealthCare Apps. The idea behind tracking nutrition was in order to help diabetics keep track of their total carbohydrate count, but also because the Integrated Microsystems Lab at McGill (IML) (&lt;a href=&quot;http://www.iml.ece.mcgill.ca/index_iml.php&quot;&gt;link&lt;/a&gt;) is developing a database that tracks the body’s insulin responses to food. The IML want’s to build a closed all-in one solution, where diabetic patients are able to optimize their insulin shots according to the foods they’ve eaten. One branch of the project, is to use ML and image detection to count nutrient intake, where the idea is to use a camera to detect foods and track carbohydrates. The CDC reccomends diabetics count Carbs in order to “make managing blood sugar easier”.&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-app&quot;&gt;The App&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/posts/food-detection/image14.png&quot; alt=&quot;img1&quot; height=&quot;576&quot; width=&quot;502&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The app is made using SWIFT and CoreML. The architecture of the app is shown in the flow chart above. The four tabs each have specific functions, the camera tab detects the image using a ML Model and the Search Tab requires a text input; after both tabs recieve input they send a JSON query to the Nutritionix API&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; which returns the nutritional values of the food items. The carb counter tab takes all of the food inputs and displays them in a list that displays the total and individual carbohydrate content. Here are some of the images illustrating the functionality of the app:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/food-detection/App-Built.gif&quot; alt=&quot;img2&quot; /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;img src=&quot;/img/posts/food-detection/image17.png&quot; alt=&quot;img3&quot; /&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;img src=&quot;/img/posts/food-detection/image13.png&quot; alt=&quot;img4&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/food-detection/image10.png&quot; alt=&quot;img5&quot; /&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/food-detection/image15.png&quot; alt=&quot;img6&quot; /&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/food-detection/image12.png&quot; alt=&quot;img7&quot; height=&quot;591&quot; width=&quot;332&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lastly, the app is integrated with Apple Healthkit, this was done in order to open up the door to further integration of the App with the IML teams insulin database with Apple’s glucose monitoring kit.&lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/food-detection/image4.png&quot; alt=&quot;img8&quot; height=&quot;591&quot; width=&quot;332&quot; /&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/food-detection/image18.png&quot; alt=&quot;img9&quot; height=&quot;591&quot; width=&quot;332&quot; /&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The app was built to provide an easy to use interface with the user in mind. UI/UX was a priority for our team and every interaction and edge case was taken into account. The team picked up on SWIFT development on the go, therefore the views could have been more smooth, e.g better button placement and color schemes, simpler human-computer interaction (Steve Jobs’ 3 click aproach to accessing iPod songs). There could have also been a greater emphasis on analytics, and the data taken from Apple’s healthkit and food inputs could have been intagrated to provide a more data driven approach to diabetes, which to my best knoweledge, is the next goal of the IML team at McGill.&lt;/p&gt;
+
+&lt;h2 id=&quot;coreml-model&quot;&gt;CoreMl Model&lt;/h2&gt;
+
+&lt;p&gt;We were given the Food Detection Model in Pytorch and had to convert it to CoreML format. The reason behind using a previous model is that we are interested in mimicking the same architecture used for previous projects in the lab. The conversion was not straightforward, and the team had to train our own model using darknet.&lt;/p&gt;
+
+&lt;p&gt;We trained the model using tiny-YOLO as it is faster on devices such as cell phones. We first trained the model on 10 classes from the UECFood100 dataset. Inside the UECFood100 dataset, each folder contains images of a particular class and a text file called “bb_info.txt” where the coordinates of the corresponding food are already present so we do not need to label the images for object detection on our own. We used darknet to train the model and we wrote Python code for the preprocessing step in order to prepare data. Packages used include os and shutil to organize files, and pandas, cv2, matplotlib to remove dirty data as some images need to be rotated to be correctly labelled using the provided coordinates.&lt;/p&gt;
+
+&lt;p&gt;For the training step we used Google Cloud’s virtual machine with a GPU of NVIDIA Tesla T4. The training process took a total of 23,000 iterations. The final model was chosen based on the highest mAP (mean average precision) and IoU (intersection over union) as well as the precision given on the validation dataset to avoid overfitting. The training was stopped when the average loss no longer decreased.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/food-detection/image8.png&quot; alt=&quot;img10&quot; /&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;img src=&quot;/img/posts/food-detection/image16.png&quot; alt=&quot;img11&quot; /&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;After training the model using darknet, we used darkflow to convert it from the format of weights to the format of pb. Then we used tf-coreml to convert the model to Core ML. When using tf-coreml, it is necessary to set a few parameters that correspond to the training method used. In our case, the channel color must be set to RGB and the weights are normalized in the range from 0 to 1 so the image scale needs to be set to 1/255.0. If those parameters are missing, the Core ML would generate incorrect predictions.&lt;/p&gt;
+
+&lt;p&gt;Given time constraints the model could not have been trained on more datapoints and on a larger dataset, however the model was large enough to demonstrate basic functionality of the app.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;At the end the team was satisfied by the functionality of the app. There were some improvements that would have increased the utility of the app, such as a more comprehensive CoreML model that is trained on a larger dataset, more user driven analytics and a better UI model. The main takeaway for our team from this project is that the application we have built is more complex than the majority of iOS apps, mainly due to conscious design with the user in mind. Lastly, the team learnt that we are able to build tools that further developments in our society, it just requires a passion for problem solving. In this case we are able to progress developments that aid Diabetic patients.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;You can see the final report &lt;a href=&quot;https://docs.google.com/document/d/1-bEU1zgkFA48-8IdE75lkTyf7qzyhJI5pvUjpXTX8Rw/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;“Carb Counting, Eat Well with Diabetes.” Centers for Disease Control and Prevention, Centers for Disease Control and Prevention, 19 Sept. 2019, www.cdc.gov/diabetes/managing/eat-well/diabetes-and-carbohydrates.html#:~:text=On average, people with diabetes,(60–75 grams). &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;“Nutritionix API.” Nutritionix, https://www.nutritionix.com/business/api. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Apple Inc. “One Drop Chrome Blood Glucose Monitoring Kit.” Apple Developer, https://www.apple.com/shop/product/HMN02LL/A/one-drop-chrome-blood-glucose-monitoring-kit. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Hamza</name></author><category term="ML" /><category term="Image\" /><category term="Detection" /><category term="SWIFT" /><category term="Pytorch" /><summary type="html">Preface This app was built with a team of three individuals as part of the Final year design project for ECE at McGill University. Why Track Food?</summary></entry><entry><title type="html">Post example 2</title><link href="http://localhost:4000/2019/11/26/example-of-blog-post2.html" rel="alternate" type="text/html" title="Post example 2" /><published>2019-11-26T13:00:40+03:00</published><updated>2019-11-26T13:00:40+03:00</updated><id>http://localhost:4000/2019/11/26/example-of-blog-post2</id><content type="html" xml:base="http://localhost:4000/2019/11/26/example-of-blog-post2.html">&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/content/post-example/Banner.jpg&quot; alt=&quot;bay&quot; class=&quot;post-pic&quot; /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is an example of blog post.
+Picture by &lt;a href=&quot;https://unsplash.com/@bkotynski&quot;&gt;Bethany Legg&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;#part-1&quot;&gt;Part 1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#part-2&quot;&gt;Part 2&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#part-2-sub-part-1&quot;&gt;Part 2 Sub-part 1&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#part-2-sub-part-2&quot;&gt;Part 2 Sub-part 2&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#footnotes&quot;&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;part-1&quot;&gt;PART 1&lt;/h4&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;part-2&quot;&gt;PART 2&lt;/h4&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;part-2-sub-part-1&quot;&gt;PART 2 SUB PART 1&lt;/h5&gt;
+&lt;p&gt;Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;part-2-sub-part-2&quot;&gt;PART 2 SUB PART 2&lt;/h5&gt;
+&lt;p&gt;Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;footnotes&quot;&gt;FOOTNOTES&lt;/h5&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;This is a note! &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Post example</title><link href="http://localhost:4000/2019/10/26/example-of-blog-post.html" rel="alternate" type="text/html" title="Post example" /><published>2019-10-26T13:00:40+03:00</published><updated>2019-10-26T13:00:40+03:00</updated><id>http://localhost:4000/2019/10/26/example-of-blog-post</id><content type="html" xml:base="http://localhost:4000/2019/10/26/example-of-blog-post.html">&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/content/post-example/Banner.jpg&quot; alt=&quot;bay&quot; class=&quot;post-pic&quot; /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is an example of blog post.
+Picture by &lt;a href=&quot;https://unsplash.com/@bkotynski&quot;&gt;Bethany Legg&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;#part-1&quot;&gt;Part 1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#part-2&quot;&gt;Part 2&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#part-2-sub-part-1&quot;&gt;Part 2 Sub-part 1&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#part-2-sub-part-2&quot;&gt;Part 2 Sub-part 2&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#footnotes&quot;&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;part-1&quot;&gt;PART 1&lt;/h4&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;part-2&quot;&gt;PART 2&lt;/h4&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;part-2-sub-part-1&quot;&gt;PART 2 SUB PART 1&lt;/h5&gt;
+&lt;p&gt;Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;part-2-sub-part-2&quot;&gt;PART 2 SUB PART 2&lt;/h5&gt;
+&lt;p&gt;Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;footnotes&quot;&gt;FOOTNOTES&lt;/h5&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;This is a note! &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>

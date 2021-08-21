@@ -1,0 +1,70 @@
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+
+title: Hamza Mian
+description: >- # this means to ignore newlines until "baseurl:"
+  Bay is a minimal Jekyll Theme.
+baseurl: "" # the subpath of the site
+url: "http://localhost:4000" # the base hostname & protocol for the site
+og_image: /assets/img/profile-pic.png
+# google_analytics: "UA-121636368-3"
+
+header:
+  pages:
+    - name: About
+      slug: /
+    # - name: Work
+    # - name: Blog
+    - name: Research
+    - name: Life
+
+footer:
+  show_powered_by: true
+  contact:
+    - name: Email
+      value: mian.hamza@mail.mcgill.ca
+      link: mailto:mian.hamza@mail.mcgill.ca
+    # - name: WeChat
+      # value: YourWeChatUsername
+      # link: "#"
+  follow:
+    - name: Twitter
+      link: https://twitter.com/Mian__Hamza_
+      username: "@Mian__Hamza_"
+    # - name: Facebook
+      # link: http://facebook.com/YourFacebookUsername
+    - name: LinkedIn
+      link: https://www.linkedin.com/in/mian-hamza/
+    - name: GitHub
+      link: https://github.com/haaaamza
+    # - name: Dribbble
+      # link: https://dribbble.com/YourDribbbleUsername
+    # - name: RSS
+      # link: /feed.xml
+
+paginate: 5
+paginate_path: "/life/page:num/"
+
+# Build settings
+markdown: kramdown
+sass:
+    style: :compressed
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+
+# Excluded items
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - feed.xml
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# Used for defeating caching
+version: 1
