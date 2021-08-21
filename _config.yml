@@ -42,6 +42,7 @@ footer:
     # - name: RSS
       # link: /feed.xml
 
+gems: [jekyll-paginate]
 paginate: 5
 paginate_path: "/life/page:num/"
 
