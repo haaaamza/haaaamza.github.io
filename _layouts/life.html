@@ -10,7 +10,7 @@
           <h1 class="page-heading">{{ page.title }}</h1>
           {{ content }}
           <div class="life-post-list">
-            {% for post in site.posts %}
+            {% for post in paginator.posts %}
               {% if post.draft != true and post.life == true %}
                 <div class="box">
                         <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
@@ -18,13 +18,13 @@
                             {{ post.date | date: "%b %d, %Y" }}
                             </span>
                         </a>
-                    
+
                     {% unless post.og_image == "" %}
                     <a href="{{ post.og_image | prepend: site.baseurl }}">
-                    
+
                         <img class="img-life" src={{ post.og_image | prepend: site.baseurl }}>
                     </a>
-                    
+
                 </div>
 
                 <p class= img-text> {{post.blurb}} </p>
