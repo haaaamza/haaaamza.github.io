@@ -10,7 +10,7 @@
          <h1 class="page-heading">{{ page.title }}</h1>
          {{ content }}
          <div class="life-post-list">
-           {% for post in paginator.posts %}
+           {% for post in site.posts %}
              {% if post.draft != true and post.life == true %}
                <div class="box">
                        <a class = "pluslink" href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
