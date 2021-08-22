@@ -25,14 +25,21 @@
     .container{
       display: flex;
       align-items: center;
+      /* align-content: flex-end; */
+      margin: 0 -15px;
     }
     .post-img{
-    max-width:80%;
+    min-width: 80%;
+    max-width:100%;
+    /* width: 70%; */
     height:auto;
     width:auto;
     }
   }
-
+  .container div{
+    /* border:1px #ccc solid; */
+    padding:5px;
+  }
   .blog-post-title {
     font-size: 150%;
     /* letter-spacing: normal; */
@@ -49,16 +56,16 @@
     text-decoration:none;
   }
   .box-1{
-    flex: 1 0 30%;
+    flex: 2 1 50%;
     order: 1;
   }
   .box-2{
-    flex: 1 1;
+    flex: 1 1 50%;
     order: 2;
   }
   .post-text {
     font-size: 110%;
-    margin-right: 10px;
+    /* margin-left: 10px; */
   }
   </style>
   {% include head.html %}
