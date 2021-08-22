@@ -55,13 +55,13 @@
           {{ content }}
             {% for post in site.posts %}
               {% if post.draft != true and post.research ==true %}
-                <!-- <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}" class = pluslink> -->
+                <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}" class = pluslink>
                   <h3 class="blog-post-title"> {{ post.title }}</h3>
                   <div class="container">
                     <div class = "box-1">
                       <img class = "post-img" src={{ post.og_image | prepend: site.baseurl }}>
                     </div>
-                              <!-- </a> -->
+                </a>
                     <div class="box-2">
                       <h2 class = "post-text">{{ post.blurb }}</h2>
                     </div>
