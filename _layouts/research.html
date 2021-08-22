@@ -2,43 +2,13 @@
 <html>
   <head>
   <style>
-  /* @media screen and (max-width: 1000px) {
-  .container {
-    clear:both;
-  }
-  } */
+  @media(min-width: 786px){
     .container{
-      width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-direction: reverse;
-      flex-basis: 40%;
     }
-    .container > .image {
-    flex: 1 0 0%;
-      text-align:right;/* and here*/
-    }
-    .image > .container{
-    flex: 1 2 0%;
-    text-align:bottom;/* and here*/
-    clear: left;
-    }
-    .image > img {
-      vertical-align:top;/* here */
-      max-width: 100%;
-      max-height: 300px;
-    }
-    .container > .text {
-      flex: 2 0 0%;
-      /* and eventually */
+  }
 
-      margin:auto 0;
-    }
-    .text {
-      font-size: 10px;
-      padding-left: 20px;
-    }
     .blog-post-title {
     font-size: 21px;
     /* letter-spacing: normal; */
@@ -54,11 +24,22 @@
   .pluslink, .pluslink:visited,.pluslink:hover,.pluslink:active {
     text-decoration:none;
   }
-  .img{
-    max-width:400px;
+  .box-1{
+    flex: 1 0 30%;
+    order: 1;
+  }
+  .box-2{
+    flex: 1 1;
+    order: 2;
+  }
+  .post-img{
+    max-width:80%;
     height:auto;
     width:auto;
-    flex-basis: 40%;
+    }
+  .post-text {
+    font-size: 15px;
+    padding-left: 20px;
   }
   </style>
   {% include head.html %}
@@ -74,13 +55,15 @@
           {{ content }}
             {% for post in site.posts %}
               {% if post.draft != true and post.research ==true %}
-                <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}" class = pluslink>
+                <!-- <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}" class = pluslink> -->
+                  <h3 class="blog-post-title"> {{ post.title }}</h3>
                   <div class="container">
-                    <h3 class="blog-post-title"> {{ post.title }}</h3>
-                    <img class = "img" src={{ post.og_image | prepend: site.baseurl }}>
-                </a>
-                    <div class="text">
-                      <h2>{{ post.blurb }}</h2>
+                    <div class = "box-1">
+                      <img class = "post-img" src={{ post.og_image | prepend: site.baseurl }}>
+                    </div>
+                              <!-- </a> -->
+                    <div class="box-2">
+                      <h2 class = "post-text">{{ post.blurb }}</h2>
                     </div>
                   </div>
 
