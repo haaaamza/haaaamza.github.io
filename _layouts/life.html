@@ -13,7 +13,7 @@
             {% for post in site.posts %}
               {% if post.draft != true and post.life == true %}
                 <div class="box">
-                        <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
+                        <a class = "pluslink" href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
                             <span class="life-post-date">
                             {{ post.date | date: "%b %d, %Y" }}
                             </span>
