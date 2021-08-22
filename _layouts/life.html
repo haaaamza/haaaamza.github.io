@@ -1,54 +1,54 @@
 
 <!DOCTYPE html>
- {% include head.html %}
-  <body>
-    {% include header.html %}
+{% include head.html %}
+ <body>
+   {% include header.html %}
 
-    <div class="page-content">
-      <div class="wrapper">
-        <div class="life">
-          <h1 class="page-heading">{{ page.title }}</h1>
-          {{ content }}
-          <div class="life-post-list">
-            {% for post in site.posts %}
-              {% if post.draft != true and post.life == true %}
-                <div class="box">
-                        <a href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
-                            <span class="life-post-date">
-                            {{ post.date | date: "%b %d, %Y" }}
-                            </span>
-                        <!-- </a> -->
-                    {% unless post.og_image == "" %}
-                    <!-- <a href="{{ post.og_image | prepend: site.baseurl }}"> -->
-                        <img class="img-life" src={{ post.og_image | prepend: site.baseurl }}>
-                      <!-- </a> -->
+   <div class="page-content">
+     <div class="wrapper">
+       <div class="life">
+         <h1 class="page-heading">{{ page.title }}</h1>
+         {{ content }}
+         <div class="life-post-list">
+           {% for post in paginator.posts %}
+             {% if post.draft != true and post.life == true %}
+               <div class="box">
+                       <a class = "pluslink" href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
+                           <span class="life-post-date">
+                           {{ post.date | date: "%b %d, %Y" }}
+                           </span>
+                       <!-- </a> -->
+                   {% unless post.og_image == "" %}
+                   <!-- <a href="{{ post.og_image | prepend: site.baseurl }}"> -->
+                       <img class="img-life" src={{ post.og_image | prepend: site.baseurl }}>
+                     <!-- </a> -->
 
-                </div>
+               </div>
 
-                <p class= img-text> {{post.blurb}} </p>
-                {% endunless %}
+               <p class= img-text> {{post.blurb}} </p>
+               {% endunless %}
 
-                {% if post.isquote == true %}
-                <figure>
-                    <blockquote>
-                        <p>{{ post.quote }}</p>
-                    </blockquote>
-                    <figcaption>—{{post.author}}{%unless post.source == none%}<cite>{{post.source | prepend: "," }}</cite>{%endunless%}</figcaption>
-                </figure>
-                {% endif %}
-              </a>
-            {% endif %}
+               {% if post.isquote == true %}
+               <figure>
+                   <blockquote>
+                       <p>{{ post.quote }}</p>
+                   </blockquote>
+                   <figcaption>—{{post.author}}{%unless post.source == none%}<cite>{{post.source | prepend: "," }}</cite>{%endunless%}</figcaption>
+               </figure>
+               {% endif %}
+             </a>
+           {% endif %}
 
-            {% endfor %}
+           {% endfor %}
 
-            <!-- {% include pagination.html %} -->
-            </div>
-        </div>
-      </div>
-    </div>
+           <!-- {% include pagination.html %} -->
+           </div>
+       </div>
+     </div>
+   </div>
 
-    {% include footer.html %}
+   {% include footer.html %}
 
-    {% include foot.html %}
-  </body>
+   {% include foot.html %}
+ </body>
 </html>

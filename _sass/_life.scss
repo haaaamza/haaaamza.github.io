@@ -21,6 +21,10 @@
   }
   .pluslink, .pluslink:visited,.pluslink:hover,.pluslink:active {
     text-decoration:none;
+    color:black;
+    :hover{
+      // color: white;
+    }
   }
 //   .img-life{
 //     width: 500px;
@@ -41,41 +45,6 @@
     //   white-space: nowrap;
   }
 
-
-
-//   blockquote{
-    // width: 470px;
-    // margin-left: -30px;
-    // padding-left: 30px;
-    // // color: #222;
-    // // background: url(https://static.tumblr.com/sajzoro/2pUkqr1t1/aster.png) 
-    // //             top left no-repeat;
-    // // background: #ccc;
-    // border-radius: 30px;    
-    // font-style: italic;
-    // margin-top: 0;
-    // display: block;
-    // margin-block-start: 1em;
-    // margin-block-end: 1em;
-    // margin-inline-start: 40px;
-    // margin-inline-end: 40px;
-//   }
-//   blockquote::before {
-//     content: "\201C";
-//     display: block;
-//     font-size: 60px;
-//     left: -20px;
-//     top: -50px;
-//     position: relative;
-//     height: 0;
-//     }
-//   .thequote{
-//     font-size: 1.25em;
-//     line-height: 1.3;
-//     color: #000;
-//   }
-//   @include img-responsive();
-
 }
 
 blockquote {
@@ -87,6 +56,15 @@ blockquote p {
     padding: 15px;
     background: #eee;
     border-radius: 5px;
+}
+blockquote p:hover{
+  padding: 15px;
+  // background:#47d84b;
+  background: #43CC47;
+  color: white;
+  font-weight: bold;
+  // background: #1982FC;
+  border-radius: 5px;
 }
 
 blockquote p::before {
