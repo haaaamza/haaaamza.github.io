@@ -13,10 +13,16 @@
       align-items: center;
       justify-content: center;
       flex-direction: reverse;
+      flex-basis: 40%;
     }
     .container > .image {
     flex: 1 0 0%;
       text-align:right;/* and here*/
+    }
+    .image > .container{
+    flex: 1 2 0%;
+    text-align:bottom;/* and here*/
+    clear: left;
     }
     .image > img {
       vertical-align:top;/* here */
@@ -52,6 +58,7 @@
     max-width:400px;
     height:auto;
     width:auto;
+    flex-basis: 40%;
   }
   </style>
   {% include head.html %}
