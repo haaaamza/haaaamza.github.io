@@ -1,14 +1,32 @@
 
+<!-- <html> -->
 <header class="site-header">
   <style>
-    /* .img-head{
+    /* .logo {
+      display: block;
+      text-indent: -9999px;
+      width: 100px;
+      height: 82px;
+      background: url(/assets/img/title.svg);
+      background-size: 100px 82px;
+    } */
+    .img-head, image{
+      /* display: block; */
       width: 200px;
       height: auto;
-    } */
+    }
   </style>
   <div class="wrapper">
     <a class="site-title" href="{{ "" | prepend: site.baseurl | prepend: site.url }}/">
-      <img src="{{ "/assets/img/title.png" | absolute_url }}" alt="{{ site.title }}"/>
+      <svg class = "img-head" xmlns="http://www.w3.org/2000/svg" viewBox="-219.7 10.45 929.41 116.52" style="background: none;" preserveAspectRatio="xMidYMid"><defs><filter id="editing-hover" x="-100%" y="-100%" width="300%" height="300%"><feFlood flood-color="rgba(7.175633423180599%,36.89671315285748%,61.142857142857146%,0)" result="flood"/><feComposite operator="in" in2="SourceAlpha" in="flood" result="shadow"/><feOffset dx="-4" dy="-4" in="SourceGraphic" result="offset-1"/><feOffset dx="4" dy="4" in="shadow" result="offset-2"/><feMerge><feMergeNode in="offset-2"/><feMergeNode in="offset-1"/></feMerge></filter></defs><g filter="url(#editing-hover)"><g transform="translate(-222.59498691558838, 126.2599983215332)"><path d="M80.85-61.38L80.85-101.81L94.17-101.81L94.17 0L80.85 0L80.85-50.48L26.20-50.48L26.20 0L12.89 0L12.89-101.81L26.20-101.81L26.20-61.38L80.85-61.38ZM202.56 0L189.04 0L175.66-34.62L135.37-34.62L121.99 0L108.47 0L148.82-101.81L162.20-101.81L202.56 0ZM155.48-86.94L139.55-45.52L171.48-45.52L155.48-86.94ZM271.03-13.59L299.35-101.74L319.10-101.74L331.35 0L318.39 0L307.77-85.67L307.06-85.67L278.96 0L263.10 0L234.99-85.67L234.28-85.67L223.66 0L210.70 0L222.95-101.74L242.71-101.74L271.03-13.59ZM350.18-90.91L350.18-101.81L414.61-101.81L414.61-92.32L364.98-10.90L415.03-10.90L415.03 0L348.48 0L348.48-9.35L398.25-90.91L350.18-90.91ZM520.95 0L507.43 0L494.05-34.62L453.76-34.62L440.38 0L426.86 0L467.21-101.81L480.60-101.81L520.95 0ZM473.87-86.94L457.94-45.52L489.87-45.52L473.87-86.94ZM630.48-13.59L658.80-101.74L678.55-101.74L690.80 0L677.85 0L667.23-85.67L666.52-85.67L638.41 0L622.55 0L594.44-85.67L593.74-85.67L583.12 0L570.16 0L582.41-101.74L602.16-101.74L630.48-13.59ZM711.97 0L711.97-101.81L725.28-101.81L725.28 0L711.97 0ZM835.24 0L821.71 0L808.33-34.62L768.05-34.62L754.67 0L741.14 0L781.50-101.81L794.88-101.81L835.24 0ZM788.15-86.94L772.22-45.52L804.16-45.52L788.15-86.94ZM932.30-101.81L932.30 0.71L916.73 0.71L862.57-84.39L862.57 0L849.26 0L849.26-101.81L864.83-101.81L918.99-16.71L918.99-101.81L932.30-101.81Z" fill="rgba(0%,0%,0%,0.982)"/></g></g><style>text {
+        font-size: 64px;
+        font-family: Arial Black;
+        dominant-baseline: central;
+        text-anchor: middle;
+      }</style>
+      <image src="{{ "/assets/img/title.png" | absolute_url }}" alt="{{ site.title }}" xlink:href=""/>
+    </svg>
+
     </a>
 
     <nav class="site-nav">
@@ -30,3 +48,4 @@
     </nav>
   </div>
 </header>
+<!-- </html> -->
