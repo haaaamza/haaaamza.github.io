@@ -16,7 +16,7 @@
       margin-top: 14px;
     }
   }
-  .life-post-date:hover, .life-post-date:active, .life-post-date:target {
+  .life-post-date:hover {
     color: rgba(31, 224, 47, 0.815);
   }
   .pluslink, .pluslink:visited,.pluslink:hover,.pluslink:active {
@@ -57,7 +57,7 @@ blockquote p {
     background: #eee;
     border-radius: 5px;
 }
-blockquote p:hover{
+blockquote p:hover, .blockquote p:active, .blockquote p:target{
   padding: 15px;
   // background:#47d84b;
   background: #43CC47;
