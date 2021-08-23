@@ -75,7 +75,7 @@ blockquote p:hover, .blockquote p:active, .blockquote p:target{
     border-radius: 5px;
   }
 }
-@media(hover: hover) and (pointer: fine) {
+@media(hover: none) and (pointer: coarse) {
   blockquote p:hover {
     padding: 15px;
     background: #43CC47;
