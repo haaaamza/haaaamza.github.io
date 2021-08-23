@@ -67,7 +67,16 @@ blockquote p:hover, .blockquote p:active, .blockquote p:target{
   border-radius: 5px;
 }
 @media screen and (max-width:1024px){
-  .blockquote p.hoverclass{
+  blockquote p.hoverclass{
+    padding: 15px;
+    background: #43CC47;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+}
+@media(hover: hover) and (pointer: fine) {
+  blockquote p:hover {
     padding: 15px;
     background: #43CC47;
     color: white;
