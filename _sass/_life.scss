@@ -16,7 +16,7 @@
       margin-top: 14px;
     }
   }
-  .life-post-date:hover {
+  .life-post-date:hover, .life-post-date:active, .life-post-date:target {
     color: rgba(31, 224, 47, 0.815);
   }
   .pluslink, .pluslink:visited,.pluslink:hover,.pluslink:active {
