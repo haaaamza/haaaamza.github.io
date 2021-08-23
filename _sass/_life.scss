@@ -66,6 +66,15 @@ blockquote p:hover, .blockquote p:active, .blockquote p:target{
   // background: #1982FC;
   border-radius: 5px;
 }
+@media screen and (max-width:1024px){
+  .blockquote p.hoverclass{
+    padding: 15px;
+    background: #43CC47;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+}
 
 blockquote p::before {
     content: '\201C';
