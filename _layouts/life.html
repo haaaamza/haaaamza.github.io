@@ -1,6 +1,19 @@
 
 <!DOCTYPE html>
-{% include head.html %}
+<head>
+  {% include head.html %}
+  <script>
+    $( window ).scroll(function() {
+      $( ".search-results-container" ).addClass("hoverclass");
+      clearTimeout($.data(this, 'scrollTimer'));
+        $.data(this, 'scrollTimer', setTimeout(function() {
+            $( ".search-results-container" ).removeClass("hoverclass");
+        }, 250));
+    });
+  </script>
+</head>
+
+
  <body>
    {% include header.html %}
 
