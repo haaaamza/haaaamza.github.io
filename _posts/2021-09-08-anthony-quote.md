@@ -14,5 +14,5 @@ author: Anthony Bourdain
 Anthony constanly inspires me to seek out new life experiences and inspiration.
 
 Taken in the heart of the Middle East.
-![anthony](/img/life/anthony.png){:height="400"}
+![anthony](/img/life/anthony.gif){:height="400"}
 
