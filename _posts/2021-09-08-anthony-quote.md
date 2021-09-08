@@ -16,3 +16,6 @@ Anthony constanly inspires me to seek out new life experiences and inspiration.
 Taken in the heart of the Middle East.
 ![anthony](/img/life/anthony.gif){:height="400"}
 
+BBQ in the middle of the desert, in the middle of the night.
+![bbq](/img/life/desert.gif){:width="400"}
+
