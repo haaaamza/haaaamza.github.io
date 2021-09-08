@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  ""
-date:   2020-08-21 10:00:40
+date:   2020-09-08 10:00:00
 # blurb: "A look at an example post using Bay Jekyll theme."
 life: true
 isquote: true
@@ -11,5 +11,8 @@ author: Anthony Bourdain
 # extra_img: '/img/life/manto.png'
 # 'assets/img/'
 ---
+Anthony constanly inspires me to seek out new life experiences and inspiration.
 
-One of my favourite food and travel authors that would inspire many others to live a more fulfilling life.
+Taken in the heart of the Middle East.
+![anthony](/img/life/anthony.png){:height="400"}
+
