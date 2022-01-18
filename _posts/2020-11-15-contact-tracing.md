@@ -106,7 +106,7 @@ At the end the team was satisfied by the functionality of the app. There were so
 
 ------
 
-**You can see the final paper [here](https://drive.google.com/file/d/18gY8k0e6w29lctstFQHlq7tn0mEuCGwQ/view){:target="_blank"}**
+**The final paper has been accepted at the IEC Science Journal of Networking and Network Applications. Check it out [here](https://iecscience.org/jpapers/91?fbclid=IwAR1WHf48PcpEn5dck86phOr7VNHaZus1bkTfvj6j31rPTxzmIx6MvCqxj8k){:target="_blank"}**
 
 
 [^1]:”Scientific Brief: SARS-CoV-2 Transmission”, Centers for Disease Control and Prevention, 2021. [Online]. Available: https://www.cdc.gov/coronavirus/2019-ncov/science/science-briefs/sars- cov-2-transmission.html. [Accessed: 19- December- 2021].
