@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<head>
+  {% include head.html %}
+  <script>
+    $( window ).scroll(function() {
+      $( ".search-results-container" ).addClass("hoverclass");
+      clearTimeout($.data(this, 'scrollTimer'));
+        $.data(this, 'scrollTimer', setTimeout(function() {
+            $( ".search-results-container" ).removeClass("hoverclass");
+        }, 250));
+    });
+  </script>
+</head>
+
+
+ <body>
+   {% include header.html %}
+
+   <div class="page-content">
+     <div class="wrapper">
+       <div class="life">
+         <h1 class="page-heading">{{ page.title }}</h1>
+         {{ content }}
+         <div class="life-post-list">
+           {% for post in site.posts %}
+             {% if post.draft != true and post.life == true %}
+               <div class="box">
+                       <a class = "pluslink" href="{{ post.url | replace:".html","" | prepend: site.baseurl }}">
+                           <span class="life-post-date">
+                           {{ post.date | date: "%b %d, %Y" }}
+                           </span>
+                       <!-- </a> -->
+                   {% unless post.og_image == "" %}
+                   <!-- <a href="{{ post.og_image | prepend: site.baseurl }}"> -->
+                       <img class="img-life" src={{ post.og_image | prepend: site.baseurl }}>
+                     <!-- </a> -->
+
+               </div>
+
+               <p class= img-text> {{post.blurb}} </p>
+               {% endunless %}
+
+               {% if post.isquote == true %}
+               <figure>
+                   <blockquote>
+                       <p>{{ post.quote }}</p>
+                   </blockquote>
+                   <figcaption>—{{post.author}}{%unless post.source == none%}<cite>{{post.source | prepend: "," }}</cite>{%endunless%}</figcaption>
+               </figure>
+               {% endif %}
+             </a>
+           {% endif %}
+
+           {% endfor %}
+
+           <!-- {% include pagination.html %} -->
+           </div>
+       </div>
+     </div>
+   </div>
+
+   {% include footer.html %}
+
+   {% include foot.html %}
+ </body>
+</html>
